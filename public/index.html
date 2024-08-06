@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Upload</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Upload a File</h1>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" required />
+        <button type="submit">Upload</button>
+      </form>
+      <div id="uploadProgress" style="display: none">
+        <progress id="progressBar" value="0" max="100"></progress>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div id="uploadResult"></div>
+    </div>
+    <script src="/scripts.js"></script>
+  </body>
+</html>
