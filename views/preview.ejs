@@ -11,18 +11,30 @@
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="<%= fileUrl %>" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="<%= ["mp4", "webm",
+    "ogg"].includes(fileExtension) ? "video" : "website" %>" />
     <meta property="og:title" content="Neta - File Preview" />
     <meta property="og:description" content="" />
+    <% if (["mp4", "webm", "ogg"].includes(fileExtension)) { %>
+    <meta property="og:video" content="<%= s3EndpointUrl %>" />
+    <% } else { %>
     <meta property="og:image" content="<%= s3EndpointUrl %>" />
+    <% } %>
 
     <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="<%= ["mp4", "webm",
+    "ogg"].includes(fileExtension) ? "player" : "summary_large_image" %>" />
     <meta property="twitter:domain" content="neta.vahry.my.id" />
     <meta property="twitter:url" content="<%= fileUrl %>" />
     <meta name="twitter:title" content="Nita - File Preview" />
     <meta name="twitter:description" content="Preview file hosted on Neta." />
+    <% if (["mp4", "webm", "ogg"].includes(fileExtension)) { %>
+    <meta name="twitter:player" content="<%= s3EndpointUrl %>" />
+    <meta name="twitter:player:width" content="1280" />
+    <meta name="twitter:player:height" content="720" />
+    <% } else { %>
     <meta name="twitter:image" content="<%= s3EndpointUrl %>" />
+    <% } %>
   </head>
   <body>
     <div class="container">
