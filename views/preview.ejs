@@ -3,25 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neta - File Preview</title>
     <link rel="stylesheet" href="/style.css" />
 
-    <!-- OpenGraph Meta Tags -->
-    <meta property="og:title" content="Nita - File Preview" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= fileUrl %>" id="ogUrl" />
-    <meta property="og:image" content="<%= s3EndpointUrl %>" id="ogImage" />
-    <meta property="og:video" content="<%= s3EndpointUrl %>" id="ogVideo" />
+    <!-- HTML Meta Tags -->
+    <title>Nita - File Preview</title>
+    <meta name="description" content="" />
 
-    <!-- Twitter Card Meta Tags -->
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="<%= fileUrl %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Neta - File Preview" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="<%= s3EndpointUrl %>" />
+
+    <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="neta.vahry.my.id" />
+    <meta property="twitter:url" content="<%= fileUrl %>" />
     <meta name="twitter:title" content="Nita - File Preview" />
-    <meta
-      name="twitter:description"
-      content="Preview your file hosted on Nita."
-    />
+    <meta name="twitter:description" content="Preview file hosted on Neta." />
     <meta name="twitter:image" content="<%= s3EndpointUrl %>" />
-    <meta name="twitter:url" content="<%= fileUrl %>" />
   </head>
   <body>
     <div class="container">
