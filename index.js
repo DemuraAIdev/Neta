@@ -1,17 +1,23 @@
 const express = require("express");
 const multer = require("multer");
 const Minio = require("minio");
+const fs = require("fs");
 require("dotenv").config();
 const path = require("path");
+const { v4: uuidv4 } = require("uuid"); // Import uuid
 
 const app = express();
+
+// Set EJS as the templating engine
+app.set("view engine", "ejs");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`; // Generate unique filename
+    cb(null, uniqueName);
   },
 });
 
@@ -44,6 +50,10 @@ minioClient.bucketExists(bucketName, (err) => {
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.post("/upload", upload.single("file"), (req, res) => {
   const file = req.file;
   if (!file) {
@@ -56,7 +66,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
 
   minioClient.fPutObject(
     bucketName,
-    file.originalname,
+    file.filename, // Use the unique filename
     file.path,
     metaData,
     (err, etag) => {
@@ -64,10 +74,19 @@ app.post("/upload", upload.single("file"), (req, res) => {
         return res.status(500).send(err);
       }
 
+      // Delete the file from internal storage after successful upload
+      fs.unlink(file.path, (err) => {
+        if (err) {
+          console.log("Error deleting file from internal storage.", err);
+        } else {
+          console.log("File deleted from internal storage.");
+        }
+      });
+
       const fileUrl = `${req.protocol}://${req.get("host")}/files/${
-        file.originalname
+        file.filename
       }`;
-      const s3EndpointUrl = `http://${process.env.MINIO_ENDPOINT}/${bucketName}/${file.originalname}`;
+      const s3EndpointUrl = `http://${process.env.MINIO_ENDPOINT}/${bucketName}/${file.filename}`;
       res.json({ fileUrl, s3EndpointUrl });
     }
   );
@@ -75,12 +94,22 @@ app.post("/upload", upload.single("file"), (req, res) => {
 
 app.get("/files/:filename", (req, res) => {
   const filename = req.params.filename;
+  const fileExtension = filename.split(".").pop().toLowerCase();
 
   minioClient.presignedGetObject(bucketName, filename, (err, presignedUrl) => {
     if (err) {
       return res.status(500).send(err);
     }
-    res.redirect(presignedUrl);
+
+    const fileUrl = `${req.protocol}://${req.get("host")}/files/${filename}`;
+    const s3EndpointUrl = `http://${process.env.MINIO_ENDPOINT}/${bucketName}/${filename}`;
+
+    res.render("preview", {
+      fileUrl,
+      s3EndpointUrl,
+      fileExtension,
+      presignedUrl,
+    });
   });
 });
 

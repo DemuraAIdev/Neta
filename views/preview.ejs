@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nita - File Preview</title>
+    <link rel="stylesheet" href="/style.css" />
+    <meta property="og:title" content="Nita - File Preview" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= fileUrl %>" id="ogUrl" />
+    <meta property="og:image" content="<%= s3EndpointUrl %>" id="ogImage" />
+    <meta property="og:video" content="<%= s3EndpointUrl %>" id="ogVideo" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Nita - File Preview</h1>
+      <div id="filePreview" class="preview">
+        <% if (["jpg", "jpeg", "png", "webp", "gif"].includes(fileExtension)) {
+        %>
+        <img src="<%= s3EndpointUrl %>" alt="Image Preview" />
+        <% } else if (["mp4", "webm", "ogg"].includes(fileExtension)) { %>
+        <video controls>
+          <source
+            src="<%= s3EndpointUrl %>"
+            type="video/<%= fileExtension %>"
+          />
+          Your browser does not support the video tag.
+        </video>
+        <% } else { %>
+        <a href="<%= fileUrl %>" target="_blank">View File</a>
+        <% } %>
+      </div>
+      <p>
+        <button id="copyS3Link">Copy S3 Link</button>
+        <button id="copyPageLink">Copy Page Link</button>
+        <a href="/">Home</a>
+      </p>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const s3EndpointUrl = "<%= s3EndpointUrl %>";
+        const fileExtension = s3EndpointUrl.split(".").pop().toLowerCase();
+
+        document
+          .getElementById("copyS3Link")
+          .addEventListener("click", function () {
+            navigator.clipboard.writeText(s3EndpointUrl).then(() => {
+              alert("S3 Link copied to clipboard");
+            });
+          });
+
+        document
+          .getElementById("copyPageLink")
+          .addEventListener("click", function () {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+              alert("Page Link copied to clipboard");
+            });
+          });
+      });
+    </script>
+  </body>
+</html>
