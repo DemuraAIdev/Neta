@@ -7,14 +7,14 @@
 
     <!-- HTML Meta Tags -->
     <title>Nita - File Preview</title>
-    <meta name="description" content="" />
+    <meta name="description" content="Preview file hosted on Neta." />
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="<%= fileUrl %>" />
     <meta property="og:type" content="<%= ["mp4", "webm",
     "ogg"].includes(fileExtension) ? "video" : "website" %>" />
     <meta property="og:title" content="Neta - File Preview" />
-    <meta property="og:description" content="" />
+    <meta property="og:description" content="Preview file hosted on Neta." />
     <% if (["mp4", "webm", "ogg"].includes(fileExtension)) { %>
     <meta property="og:video" content="<%= s3EndpointUrl %>" />
     <% } else { %>
