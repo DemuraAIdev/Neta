@@ -1,7 +1,6 @@
 const express = require("express");
 const multer = require("multer");
 const Minio = require("minio");
-const fs = require("fs");
 require("dotenv").config();
 const path = require("path");
 const { v4: uuidv4 } = require("uuid"); // Import uuid
@@ -11,15 +10,7 @@ const app = express();
 // Set EJS as the templating engine
 app.set("view engine", "ejs");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`; // Generate unique filename
-    cb(null, uniqueName);
-  },
-});
+const storage = multer.memoryStorage(); // Use memory storage
 
 const upload = multer({ storage });
 
@@ -60,33 +51,25 @@ app.post("/upload", upload.single("file"), (req, res) => {
     return res.status(400).send("No file uploaded.");
   }
 
+  const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`; // Generate unique filename
   const metaData = {
     "Content-Type": file.mimetype,
   };
 
-  minioClient.fPutObject(
+  minioClient.putObject(
     bucketName,
-    file.filename, // Use the unique filename
-    file.path,
+    uniqueName, // Use the unique filename
+    file.buffer,
     metaData,
     (err, etag) => {
       if (err) {
         return res.status(500).send(err);
       }
 
-      // Delete the file from internal storage after successful upload
-      fs.unlink(file.path, (err) => {
-        if (err) {
-          console.log("Error deleting file from internal storage.", err);
-        } else {
-          console.log("File deleted from internal storage.");
-        }
-      });
-
-      const fileUrl = `${req.protocol}://${req.get("host")}/files/${
-        file.filename
-      }`;
-      const s3EndpointUrl = `http://${process.env.MINIO_ENDPOINT}/${bucketName}/${file.filename}`;
+      const fileUrl = `${req.protocol}://${req.get(
+        "host"
+      )}/files/${uniqueName}`;
+      const s3EndpointUrl = `http://${process.env.MINIO_ENDPOINT}/${bucketName}/${uniqueName}`;
       res.json({ fileUrl, s3EndpointUrl });
     }
   );
