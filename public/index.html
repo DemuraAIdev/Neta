@@ -11,7 +11,15 @@
       <h1>Neta</h1>
       <p>Simple Media Upload Server https://github.com/DemuraAIdev/Neta</p>
       <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="file" id="fileInput" required />
+        <label for="fileInput">Choose a file:</label>
+        <input
+          type="file"
+          name="file"
+          id="fileInput"
+          title="Choose an image to upload"
+          accept="image/*"
+          required
+        />
         <button type="submit">Upload</button>
       </form>
       <div id="uploadProgress" style="display: none">
