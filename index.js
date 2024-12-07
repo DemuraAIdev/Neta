@@ -55,6 +55,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
   const metaData = {
     "Content-Type": file.mimetype,
   };
+  console.log(`File uploaded: ${file.originalname}`);
 
   minioClient.putObject(
     bucketName,
