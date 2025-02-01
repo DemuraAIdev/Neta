@@ -51,6 +51,12 @@ app.post("/upload", upload.single("file"), (req, res) => {
     return res.status(400).send("No file uploaded.");
   }
 
+  // if file not image return error
+  // const fileExtension = file.originalname.split(".").pop().toLowerCase();
+  // if (!["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
+  //   return res.status(400).send("Only image files are allowed.");
+  // }
+
   const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`; // Generate unique filename
   const metaData = {
     "Content-Type": file.mimetype,
