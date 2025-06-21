@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap"
+      rel="stylesheet"
+    />
     <!-- HTML Meta Tags -->
     <title>Neta - File Preview</title>
     <meta name="description" content="Preview file hosted on Neta." />
@@ -35,10 +38,110 @@
     <% } else { %>
     <meta name="twitter:image" content="<%= s3EndpointUrl %>" />
     <% } %>
+    <style>
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: #007bff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.5rem;
+        font-family: "Montserrat", Arial, sans-serif;
+        font-weight: bold;
+      }
+      .brand-title {
+        font-family: "Montserrat", Arial, sans-serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #222;
+      }
+      .desc {
+        color: #666;
+        margin-bottom: 24px;
+        font-size: 1rem;
+      }
+      .preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #f8faff;
+        border-radius: 8px;
+        padding: 24px 16px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 18px;
+        min-width: 320px;
+        min-height: 220px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .preview img,
+      .preview video {
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-bottom: 10px;
+      }
+      .preview a {
+        font-size: 1.1rem;
+        color: #007bff;
+        text-decoration: underline;
+        margin-bottom: 10px;
+      }
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      .action-buttons button,
+      .action-buttons a {
+        padding: 10px 18px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+        text-decoration: none;
+        font-family: "Montserrat", Arial, sans-serif;
+      }
+      .action-buttons button:hover,
+      .action-buttons a:hover {
+        background: #0056b3;
+      }
+      @media (max-width: 600px) {
+        .preview {
+          min-width: 0;
+          padding: 12px 4px;
+        }
+        .action-buttons button,
+        .action-buttons a {
+          font-size: 0.95rem;
+          padding: 8px 10px;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <h1>Neta - File Preview</h1>
+      <div class="brand">
+        <div class="brand-logo">N</div>
+        <div class="brand-title">Neta</div>
+      </div>
+      <div class="desc">File Preview</div>
       <div id="filePreview" class="preview">
         <% if (["jpg", "jpeg", "png", "webp", "gif"].includes(fileExtension)) {
         %>
@@ -52,20 +155,18 @@
           Your browser does not support the video tag.
         </video>
         <% } else { %>
-        <a href="<%= fileUrl %>" target="_blank">View File</a>
+        <a href="<%= fileUrl %>" target="_blank" rel="noopener">View File</a>
         <% } %>
       </div>
-      <p>
+      <div class="action-buttons">
         <button id="copyS3Link">Copy S3 Link</button>
         <button id="copyPageLink">Copy Page Link</button>
         <a href="/">Home</a>
-      </p>
+      </div>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const s3EndpointUrl = "<%= s3EndpointUrl %>";
-        const fileExtension = s3EndpointUrl.split(".").pop().toLowerCase();
-
         document
           .getElementById("copyS3Link")
           .addEventListener("click", function () {
@@ -73,7 +174,6 @@
               alert("S3 Link copied to clipboard");
             });
           });
-
         document
           .getElementById("copyPageLink")
           .addEventListener("click", function () {

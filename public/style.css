@@ -65,3 +65,108 @@ progress {
   max-width: 100%;
   max-height: 100%;
 }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: bold;
+}
+
+.brand-title {
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.desc {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 1rem;
+}
+
+.upload-area {
+  border: 2px dashed #007bff;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  background: #f8faff;
+  margin-bottom: 18px;
+  transition: border-color 0.2s;
+}
+
+.upload-area.dragover {
+  border-color: #0056b3;
+  background: #e6f0ff;
+}
+
+.upload-area label {
+  cursor: pointer;
+}
+
+.upload-area .upload-desc {
+  font-size: 0.95em;
+  color: #888;
+}
+
+#fileInput {
+  display: none;
+}
+
+#uploadProgress {
+  display: none;
+}
+
+button[type="submit"] {
+  margin-top: 10px;
+}
+
+.preview {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.preview-item {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 8px;
+  background: #fafbfc;
+  max-width: 120px;
+  max-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preview-item img,
+.preview-item video {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 4px;
+}
+
+.preview-item span {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  color: #555;
+  word-break: break-all;
+  text-align: center;
+}
